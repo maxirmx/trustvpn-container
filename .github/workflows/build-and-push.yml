@@ -9,7 +9,7 @@ on:
     paths-ignore:
       - '**.adoc'
       - '**.md'
-    tags:     [ 'v*' ]
+#    tags:     [ 'v*' ]
   pull_request:
   workflow_dispatch:
 
