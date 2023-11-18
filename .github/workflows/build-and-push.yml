@@ -5,11 +5,11 @@ name: build-and-push
 
 on:
   push:
-#    branches: [ main ]
+    branches: [ main ]
     paths-ignore:
       - '**.adoc'
       - '**.md'
-#    tags:     [ 'v*' ]
+    tags:     [ 'v*' ]
   pull_request:
   workflow_dispatch:
 
