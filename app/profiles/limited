@@ -1,0 +1,7 @@
+# Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
+# This file is a part of O!Service
+
+# Profile with traffic limitation
+# 1Mb in, 1Mb out
+
+shaper 1048576, 1048576
