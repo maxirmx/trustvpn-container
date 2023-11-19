@@ -11,3 +11,4 @@ set -o errexit -o pipefail -o noclobber -o nounset
 
 echo yes | ovpn_revokeclient "$1"
 rm "/etc/openvpn/ccd/$1"
+echo " == OK =="
