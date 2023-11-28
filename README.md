@@ -20,6 +20,11 @@ o-clent-modify <user name> <profiles>
 Links ```<user name>``` personal configuration to ```<profile name>```
 
 ```
+o-clent-block <user name>
+```
+Blocks profile for ```<user name>```, i.e.:  removes personal configuration from ccd folder but does not revoke the key
+
+```
 o-clent-remove <user name>
 ```
 Removes profile for ```<user name>```, i.e.: revokes key, removes personal configuration

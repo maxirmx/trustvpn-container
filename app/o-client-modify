@@ -10,6 +10,6 @@ set -o errexit -o pipefail -o noclobber -o nounset
 #   $1 - client id
 #   $2 - profile
 
-rm "/etc/openvpn/ccd/$1"
+rm -f "/etc/openvpn/ccd/$1"
 ln -s "/etc/openvpn/profiles/$2" "/etc/openvpn/ccd/$1"
 echo " == OK =="
