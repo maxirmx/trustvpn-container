@@ -15,7 +15,7 @@ easyrsa build-client-full "$1" nopass
 if [ -e "/etc/openvpn/profiles/$2" ]; then
     ln -s "/etc/openvpn/profiles/$2" "/etc/openvpn/ccd/$1"
 else
-    echo "Profile "$2" is not defined!"
+    echo "Profile $2 is not defined!"
     exit 1
 fi
 ln -s "/etc/openvpn/profiles/$2" "/etc/openvpn/ccd/$1"
