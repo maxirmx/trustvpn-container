@@ -46,4 +46,4 @@ RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trust
 RUN ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get
 RUN ln -s /opt/trustvpn-container/profiles /etc/openvpn
 
-RUN trustvpn-container-config.sh -u localhost
+RUN trustvpn-container-config -u localhost
