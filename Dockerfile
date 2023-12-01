@@ -31,12 +31,13 @@ ENV APP=trustvpn-container
 ENV APP_TZ=Europe/Moscow
 ENV SERVICE="TrustVPN"
 
+VOLUME /etc/openvpn
+
 RUN apk upgrade -U
 RUN apk add --no-cache tzdata
 RUN ln -s /usr/share/zoneinfo/${APP_TZ} /etc/localtime
 
 RUN mkdir -p /opt/trustvpn-container
-RUN mkdir -p /etc/openvpn
 
 COPY app /opt/trustvpn-container
 RUN ln -s /opt/trustvpn-container/trustvpn-container-config.sh /usr/local/bin/trustvpn-container-config
@@ -45,5 +46,3 @@ RUN ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trust
 RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify
 RUN ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get
 RUN ln -s /opt/trustvpn-container/profiles /etc/openvpn
-
-RUN trustvpn-container-config -u localhost

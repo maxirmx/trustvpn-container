@@ -24,24 +24,35 @@
 
 # ......................................................................
 test_client_create() {
-    echo "==> Check trustvpm-client-create"
-    result=$( docker run trustvpn-container bash -c "trustvpn-client-create test invalid-profile" )
+    echo "==> Test trustvpm-client-create"
 
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test invalid-profile" )
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Profile invalid-profile is not defined!"
 
-    result=$( docker run trustvpn-container bash -c "trustvpn-client-create test limited" )
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test limited" )
     assertEquals 0 "${PIPESTATUS[0]}"
     assertContains "$result" " == OK =="
 
-    result=$( docker run trustvpn-container bash -c "trustvpn-client-create test unlimited" )
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test unlimited" )
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Client with id test already exists!"
+}
+
+# ......................................................................
+test_client_get() {
+    echo "==> Check trustvpm-client-get"
+
+    result=$( docker run trustvpn-container bash -c "trustvpn-client-get test" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK =="
+
 }
 
 DIR0=$( dirname "$0" )
 DIR_ROOT=$( cd "$DIR0"/.. && pwd )
 DIR_TESTS=$( cd "$DIR_ROOT"/tests && pwd )
+DIR_CONFIG=$( cd "$DIR_ROOT"/config && pwd )
 
 echo "Running trustvpn-container API tests"
 # shellcheck source=/dev/null

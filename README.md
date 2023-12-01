@@ -28,3 +28,6 @@ Blocks profile for ```<user name>```, i.e.:  removes personal configuration from
 trustvpn-client-remove <user name>
 ```
 Removes profile for ```<user name>```, i.e.: revokes key, removes personal configuration
+
+
+trustvpn-container-config -u $HOST
