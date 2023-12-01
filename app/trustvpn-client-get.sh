@@ -10,4 +10,9 @@ set -o errexit -o pipefail -o noclobber -o nounset
 #   $1 - client id
 #
 
+if [ ! -e "/etc/openvpn/ccd/$1" ]; then
+    echo "Client with id $1 does not exist!"
+    exit 1
+fi
+
 ovpn_getclient "$1"

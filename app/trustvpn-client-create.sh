@@ -11,12 +11,16 @@ set -o errexit -o pipefail -o noclobber -o nounset
 #   $1 - client id
 #   $2 - profile
 
-easyrsa build-client-full "$1" nopass
-if [ -e "/etc/openvpn/profiles/$2" ]; then
-    ln -s "/etc/openvpn/profiles/$2" "/etc/openvpn/ccd/$1"
-else
+if [ ! -e "/etc/openvpn/profiles/$2" ]; then
     echo "Profile $2 is not defined!"
     exit 1
 fi
+
+if [ -e "/etc/openvpn/ccd/$1" ]; then
+    echo "Client with id $1 already exists!"
+    exit 1
+fi
+
+easyrsa build-client-full "$1" nopass
 ln -s "/etc/openvpn/profiles/$2" "/etc/openvpn/ccd/$1"
 echo " == OK =="
