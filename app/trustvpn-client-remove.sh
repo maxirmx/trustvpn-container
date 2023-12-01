@@ -37,4 +37,4 @@ fi
 
 echo yes | ovpn_revokeclient "$1"
 rm -f "/etc/openvpn/ccd/$1"
-echo " == OK =="
+echo " == OK == "

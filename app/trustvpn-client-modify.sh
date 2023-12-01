@@ -36,11 +36,11 @@ if [ ! -e "/etc/openvpn/ccd/$1" ]; then
     exit 1
 fi
 
-if [ ! -e "/etc/openvpn/profiles/$2" ]; then
+if [ ! -e "/opt/trustvpn-container/profiles/$2" ]; then
     echo "Profile $2 is not defined!"
     exit 1
 fi
 
 rm -f "/etc/openvpn/ccd/$1"
-ln -s "/etc/openvpn/profiles/$2" "/etc/openvpn/ccd/$1"
-echo " == OK =="
+ln -s "/opt/trustvpn-container/profiles/$2" "/etc/openvpn/ccd/$1"
+echo " == OK == "

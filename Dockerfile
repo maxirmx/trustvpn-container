@@ -45,4 +45,3 @@ RUN ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trust
 RUN ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trustvpn-client-remove
 RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify
 RUN ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get
-RUN ln -s /opt/trustvpn-container/profiles /etc/openvpn
