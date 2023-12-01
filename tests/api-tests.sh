@@ -37,14 +37,17 @@ test_client_create() {
     result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test invalid-profile" )
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Profile invalid-profile is not defined!"
+    assertTrue "[ ! -h $DIR_CONFIG/ccd/test ]"
 
     result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test limited" )
     assertEquals 0 "${PIPESTATUS[0]}"
     assertContains "$result" " == OK == "
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
 
     result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test unlimited" )
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Client with id test already exists!"
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
 }
 
 # ......................................................................
@@ -53,6 +56,40 @@ test_client_get() {
 
     result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-get test" )
     assertEquals 0 "${PIPESTATUS[0]}"
+}
+
+# ......................................................................
+test_client_modify() {
+    echo "==> Test trustvpm-client-modify"
+
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-modify test invalid-profile" )
+    assertEquals 1 "${PIPESTATUS[0]}"
+    assertContains "$result" "Profile invalid-profile is not defined!"
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-modify test unlimited" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK == "
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-modify invalid-client unlimited" )
+    assertEquals 1 "${PIPESTATUS[0]}"
+    assertContains "$result" "Client with id invalid-client does not exist!"
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+}
+
+# ......................................................................
+test_client_remove() {
+    echo "==> Test trustvpm-client-remove"
+
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-remove test" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK == "
+    assertTrue "[ ! -e $DIR_CONFIG/ccd/test ]"
+
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-remove invalid-client" )
+    assertEquals 1 "${PIPESTATUS[0]}"
+    assertContains "$result" "Client with id invalid-client does not exist!"
 }
 
 DIR0=$( dirname "$0" )
