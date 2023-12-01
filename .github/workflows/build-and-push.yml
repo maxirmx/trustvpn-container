@@ -61,7 +61,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/maxirmx/o-container
+            ghcr.io/maxirmx/trustvpn-container
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
