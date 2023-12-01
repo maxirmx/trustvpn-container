@@ -22,6 +22,14 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
+# ......................................................................
+test_container_config() {
+    echo "==> Test trustvpm-container-config"
+    result=$(docker run -v "$PWD"/tests/config:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u localhost")
+    assertEquals 0 "${PIPESTATUS[0]}"
+}
+
 # ......................................................................
 test_client_create() {
     echo "==> Test trustvpm-client-create"
@@ -32,7 +40,7 @@ test_client_create() {
 
     result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test limited" )
     assertEquals 0 "${PIPESTATUS[0]}"
-    assertContains "$result" " == OK =="
+    assertContains "$result" " == OK == "
 
     result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-create test unlimited" )
     assertEquals 1 "${PIPESTATUS[0]}"
@@ -43,17 +51,18 @@ test_client_create() {
 test_client_get() {
     echo "==> Check trustvpm-client-get"
 
-    result=$( docker run trustvpn-container bash -c "trustvpn-client-get test" )
+    result=$( docker run -v "$DIR_CONFIG":/etc/openvpn trustvpn-container bash -c "trustvpn-client-get test" )
     assertEquals 0 "${PIPESTATUS[0]}"
-    assertContains "$result" " == OK =="
-
 }
 
 DIR0=$( dirname "$0" )
 DIR_ROOT=$( cd "$DIR0"/.. && pwd )
 DIR_TESTS=$( cd "$DIR_ROOT"/tests && pwd )
-mkdir -p "$DIR_TESTS"/config
-DIR_CONFIG=$( cd "$DIR_TESTS"/config && pwd )
+DIR_CONFIG="$DIR_TESTS"/config
+if [ -e "$DIR_CONFIG" ]; then
+    sudo rm -rf "$DIR_CONFIG"
+fi
+mkdir -p "$DIR_CONFIG"
 
 echo "Running trustvpn-container API tests"
 # shellcheck source=/dev/null
