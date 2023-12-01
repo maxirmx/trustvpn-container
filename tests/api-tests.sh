@@ -52,7 +52,8 @@ test_client_get() {
 DIR0=$( dirname "$0" )
 DIR_ROOT=$( cd "$DIR0"/.. && pwd )
 DIR_TESTS=$( cd "$DIR_ROOT"/tests && pwd )
-DIR_CONFIG=$( cd "$DIR_ROOT"/config && pwd )
+mkdir -p "$DIR_TESTS"/config
+DIR_CONFIG=$( cd "$DIR_TESTS"/config && pwd )
 
 echo "Running trustvpn-container API tests"
 # shellcheck source=/dev/null
