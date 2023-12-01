@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
 # This file is a part of TrustVPN application
 # Redistribution and use in source and binary forms, with or without
@@ -22,22 +23,18 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 # ......................................................................
-# main
-
-# ......................................................................
-#  AU. Check that it is possible to extract image content (--tebako-extract option)
 test_client_create() {
     echo "==> Check trustvpm-client-create"
-    result=$( docker run -it trustvpn-container bash -c "trustvpn-client-create test invalid-profile" )
+    result=$( docker run trustvpn-container bash -c "trustvpn-client-create test invalid-profile" )
 
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Profile invalid-profile is not defined!"
 
-    result=$( docker run -it trustvpn-container bash -c "trustvpn-client-create test limited" )
+    result=$( docker run trustvpn-container bash -c "trustvpn-client-create test limited" )
     assertEquals 0 "${PIPESTATUS[0]}"
     assertContains "$result" " == OK =="
 
-    result=$( docker run -it trustvpn-container bash -c "trustvpn-client-create test unlimited" )
+    result=$( docker run trustvpn-container bash -c "trustvpn-client-create test unlimited" )
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Client with id test already exists!"
 }
