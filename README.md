@@ -8,14 +8,14 @@
 
 Контейнер должен быть инициализирован следующей командой:
 ```
-docker run -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
+docker run -rm -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
 ```
 
 ## API
 
 Все вызовы API на самом деле являются bash-скриптами, которые выполняются внутри контейнера после его инициализации
 ```
-docker run -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "<API call with parameters>"
+docker run -rm -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "<API call with parameters>"
 ```
 Примеры можно посмотреть в ```tests\api-tests.sh```.
 

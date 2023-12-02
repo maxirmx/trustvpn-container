@@ -31,7 +31,7 @@ set -o errexit -o pipefail -o noclobber -o nounset
 #   $1 - client id
 #   $2 - profile
 
-if [ ! -e "/etc/openvpn/ccd/$1" ]; then
+if [ ! -h "/etc/openvpn/ccd/$1" ]; then
     echo "Client with id $1 does not exist!"
     exit 1
 fi

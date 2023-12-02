@@ -44,4 +44,5 @@ RUN ln -s /opt/trustvpn-container/trustvpn-container-config.sh /usr/local/bin/tr
 RUN ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trustvpn-client-create
 RUN ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trustvpn-client-remove
 RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify
+RUN ln -s /opt/trustvpn-container/trustvpn-client-block.sh /usr/local/bin/trustvpn-client-block
 RUN ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get

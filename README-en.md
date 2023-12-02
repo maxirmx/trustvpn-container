@@ -9,16 +9,18 @@ User profiles are defined by files in app/profiles folder. File names shall matc
 
 Container shall be initialized with the following command:
 ```
-docker run -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
+docker run -rm -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
 ```
 
 ## API
 
-All API calls are actually bash scripts that shall be executed inside container after its initialization, i.e.: something like 
+API calls are actually bash scripts that shall be executed inside container after its initialization, i.e.: something like
 ```
-docker run -v <Path to OPneVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "<API call with parameters>"
+docker run -rm -v <Path to OPneVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "<API call with parameters>"
 ```
 Please refer to ```tests api-tests.sh``` for examples
+
+All API calls return 0 on success, 1 in case of error. Additionally ```create\modify\block\remove``` output end output with ```" == OK == "``` in case of success.
 
 ```
 trustvpn-client-create <user name> <profile name>
