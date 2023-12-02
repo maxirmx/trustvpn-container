@@ -142,6 +142,14 @@ test_client_create_blocked() {
 }
 
 # ......................................................................
+test_client_get_blocked() {
+    echo "==> Check trustvpm-client-get [blocked]"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-get test" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+}
+
+# ......................................................................
 test_client_modify_after_block_2() {
     echo "==> Test trustvpm-client-modify after block [2]"
 
