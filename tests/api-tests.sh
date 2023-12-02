@@ -26,6 +26,11 @@
 # ......................................................................
 test_container_config() {
     echo "==> Test trustvpm-container-config"
+    if [ -e "$DIR_CONFIG" ]; then
+        sudo rm -rf "$DIR_CONFIG"
+    fi
+    mkdir -p "$DIR_CONFIG"
+
     result=$(docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-container-config -u localhost")
     assertEquals 0 "${PIPESTATUS[0]}"
 }
@@ -130,10 +135,6 @@ DIR0=$( dirname "$0" )
 DIR_ROOT=$( cd "$DIR0"/.. && pwd )
 DIR_TESTS=$( cd "$DIR_ROOT"/tests && pwd )
 DIR_CONFIG="$DIR_TESTS"/config
-if [ -e "$DIR_CONFIG" ]; then
-    sudo rm -rf "$DIR_CONFIG"
-fi
-mkdir -p "$DIR_CONFIG"
 
 CONTAINER="${CONTAINER:-trustvpn-container}"
 

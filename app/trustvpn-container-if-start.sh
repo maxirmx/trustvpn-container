@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
 # This file is a part of TrustVPN application
 # Redistribution and use in source and binary forms, with or without
@@ -21,29 +22,16 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Hint:
-# docker build -t trustvpn-container .
-# docker run -p 1194:1194/UDP --cap-add NET_ADMIN --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.all.forwarding=1 trustvpn-container
+# More safety, by turning some bugs into errors.
+# Without `errexit` you don’t need ! and can replace
+# PIPESTATUS with a simple $?
 
-FROM kylemanna/openvpn:latest
+set -o errexit -o pipefail -o noclobber -o nounset
 
-ENV APP=trustvpn-container
-ENV APP_TZ=Europe/Moscow
-ENV SERVICE="TrustVPN"
+if [ ! -e /etc/openvpn/openvpn.conf ]; then
+  echo "OpenVPN server.conf not found, generating configuration"
+  ovpn_genconfig -e "# Directory where we will store the individual user configuration files" -e "client-config-dir /etc/openvpn/ccd" "$@"
+  echo "$SERVICE" | ovpn_initpki nopass
+fi
 
-VOLUME /etc/openvpn
-
-RUN apk upgrade -U
-RUN apk add --no-cache tzdata
-RUN ln -s /usr/share/zoneinfo/${APP_TZ} /etc/localtime
-
-RUN mkdir -p /opt/trustvpn-container
-
-COPY app /opt/trustvpn-container
-RUN ln -s /opt/trustvpn-container/trustvpn-container-config.sh /usr/local/bin/trustvpn-container-config
-RUN ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trustvpn-client-create
-RUN ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trustvpn-client-remove
-RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify
-RUN ln -s /opt/trustvpn-container/trustvpn-client-block.sh /usr/local/bin/trustvpn-client-block
-RUN ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get
-RUN ln -s /opt/trustvpn-container/trustvpn-container-if-start.sh /usr/local/bin/trustvpn-container-if-start
+ovpn_run
