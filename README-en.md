@@ -7,6 +7,8 @@ This is a small wrap up of ```kylemanna/openvpn```, nothing more
 
 User profiles are defined by files in app/profiles folder. File names shall match profile names as operated by openvpn-backend. Should you need to alter/add profiles you will need to rebuild container or modify container internals.
 
+The name ```blocked``` is reserved for blocked users. It should not be used as a profile name. It is not controlled but will break blocking logic.
+
 Container shall be initialized with the following command:
 ```
 docker run -rm -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"

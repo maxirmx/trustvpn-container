@@ -31,7 +31,7 @@ set -o errexit -o pipefail -o noclobber -o nounset
 #   $1 - client id
 #   $2 - profile
 
-if [ ! -e "/opt/trustvpn-container/profiles/$2" ]; then
+if [ ! -e "/opt/trustvpn-container/profiles/$2" ] && [ "$2" != "blocked" ]; then
     echo "Profile '$2' is not defined!"
     exit 1
 fi

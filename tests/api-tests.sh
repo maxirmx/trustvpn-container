@@ -87,7 +87,7 @@ test_client_modify() {
 test_client_block() {
     echo "==> Test trustvpm-client-block"
 
-    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify invalid-client unlimited" )
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-block invalid-client" )
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Client with id 'invalid-client' does not exist!"
     assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
@@ -130,6 +130,27 @@ test_client_remove() {
     assertEquals 1 "${PIPESTATUS[0]}"
     assertContains "$result" "Client with id 'invalid-client' does not exist!"
 }
+
+# ......................................................................
+test_client_create_blocked() {
+    echo "==> Test trustvpm-client-create [blocked]"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-create test blocked" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK == "
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+}
+
+# ......................................................................
+test_client_remove_blocked() {
+    echo "==> Test trustvpm-client-remove [blocked]"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-remove test" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK == "
+    assertTrue "[ ! -e $DIR_CONFIG/ccd/test ]"
+}
+
 
 DIR0=$( dirname "$0" )
 DIR_ROOT=$( cd "$DIR0"/.. && pwd )
