@@ -142,6 +142,36 @@ test_client_create_blocked() {
 }
 
 # ......................................................................
+test_client_modify_after_block_2() {
+    echo "==> Test trustvpm-client-modify after block [2]"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test invalid-profile" )
+    assertEquals 1 "${PIPESTATUS[0]}"
+    assertContains "$result" "Profile 'invalid-profile' is not defined!"
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test unlimited" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK == "
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify invalid-client unlimited" )
+    assertEquals 1 "${PIPESTATUS[0]}"
+    assertContains "$result" "Client with id 'invalid-client' does not exist!"
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+}
+
+# ......................................................................
+test_client_modify_to_blocked() {
+    echo "==> Test trustvpm-client-modify to blocked"
+
+    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test blocked" )
+    assertEquals 0 "${PIPESTATUS[0]}"
+    assertContains "$result" " == OK == "
+    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
+}
+
+# ......................................................................
 test_client_remove_blocked() {
     echo "==> Test trustvpm-client-remove [blocked]"
 

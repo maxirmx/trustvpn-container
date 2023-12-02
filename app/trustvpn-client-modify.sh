@@ -36,7 +36,7 @@ if [ ! -h "/etc/openvpn/ccd/$1" ]; then
     exit 1
 fi
 
-if [ ! -e "/opt/trustvpn-container/profiles/$2" ]; then
+if [ ! -e "/opt/trustvpn-container/profiles/$2" ] && [ "$2" != "blocked" ]; then
     echo "Profile '$2' is not defined!"
     exit 1
 fi
