@@ -49,7 +49,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Checkout shell test framework
-        if: ${{ !contains(github.ref, 'refs/tags/v') }}
         uses: actions/checkout@v3
         with:
           repository: kward/shunit2
@@ -108,3 +107,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Run trustvpn-container tests
+        if: ${{ contains(github.ref, 'refs/tags/v') }}
+        shell: bash
+        run:  tests/api-tests.sh ghcr.io/maxirmx/trustvpn-container:latest
