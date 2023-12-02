@@ -23,7 +23,7 @@ Please refer to ```tests api-tests.sh``` for examples
 ```
 trustvpn-client-create <user name> <profile name>
 ```
-Creates profile (key pair) for ```<user name>```,  links personal configuration to ```<profile name>```
+Sets up access for ```<user name>```,  links personal configuration to ```<profile name>```
 
 ```
 trustvpn-client-get <user name>
