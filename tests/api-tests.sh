@@ -26,7 +26,7 @@
 # ......................................................................
 test_container_config() {
     echo "==> Test trustvpm-container-config"
-    result=$(docker run --rm -v "$PWD"/tests/config:/etc/openvpn "$CONTAINER" bash -c ""$CONTAINER"-config -u localhost")
+    result=$(docker run --rm -v "$PWD"/tests/config:/etc/openvpn "$CONTAINER" bash -c "trustvpn-container-config -u localhost")
     assertEquals 0 "${PIPESTATUS[0]}"
 }
 
@@ -137,6 +137,6 @@ mkdir -p "$DIR_CONFIG"
 
 CONTAINER="${CONTAINER:-trustvpn-container}"
 
-echo "Running "$CONTAINER" API tests"
+echo "Running '$CONTAINER' API tests"
 # shellcheck source=/dev/null
 . "$DIR_TESTS/shunit2/shunit2"
