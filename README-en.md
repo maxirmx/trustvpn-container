@@ -1,7 +1,7 @@
 # TrustVPN
 
 OpenVPN docker container for trustvpn projects
-This is a small wrap up of kylemanna/openvpn, nothing more
+This is a small wrap up of ```kylemanna/openvpn```, nothing more
 
 ## Configuration and initalization
 
@@ -9,7 +9,7 @@ User profiles are defined by files in app/profiles folder. File names shall matc
 
 Container shall be initialized with the following command:
 ```
-docker run -v <Path to OPneVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
+docker run -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
 ```
 
 ## API
@@ -28,7 +28,7 @@ Creates profile (key pair) for ```<user name>```,  links personal configuration 
 ```
 trustvpn-client-get <user name>
 ```
-Outputs to stdout personal OpenVPN configuration file for ```<user name>```
+Outputs to ```stdout``` personal OpenVPN configuration file for ```<user name>```
 
 ```
 trustvpn-client-modify <user name> <profiles>
@@ -38,7 +38,7 @@ Links ```<user name>``` personal configuration to ```<profile name>```
 ```
 trustvpn-client-block <user name>
 ```
-Blocks profile for ```<user name>```, i.e.:  removes personal configuration from ccd folder but does not revoke the key
+Blocks profile for ```<user name>```, i.e.:  removes personal configuration from ```ccd``` folder but does not revoke the key
 
 ```
 trustvpn-client-remove <user name>
