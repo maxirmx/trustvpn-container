@@ -48,7 +48,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Checkout shell test framework
+        uses: actions/checkout@v3
+        with:
+          repository: kward/shunit2
+          path: ${{github.workspace}}/tests/shunit2
+          fetch-depth: 1
+
+      - name: Build test Docker image
+        if: ${{ !contains(github.ref, 'refs/tags/v') }}
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: trustvpn-container:latest
+          labels: |
+            org.opencontainers.image.title=TrustVPN container
+            org.opencontainers.image.description=TrustVPN container
+
+      - name: Run trustvpn-container tests
+        if: ${{ !contains(github.ref, 'refs/tags/v') }}
+        shell: bash
+        run:  tests/api-tests.sh
+
       - name: Log in to the Container registry
+        if: ${{ contains(github.ref, 'refs/tags/v') }}
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
           registry: ghcr.io
@@ -56,12 +81,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Docker meta
+        if: ${{ contains(github.ref, 'refs/tags/v') }}
         id: meta
         uses: docker/metadata-action@v5
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/maxirmx/o-container
+            ghcr.io/maxirmx/trustvpn-container
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -73,10 +99,16 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
+        if: ${{ contains(github.ref, 'refs/tags/v') }}
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
           file: ./Dockerfile
-          push: ${{ contains(github.ref, 'refs/tags/v') }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Run trustvpn-container tests
+        if: ${{ contains(github.ref, 'refs/tags/v') }}
+        shell: bash
+        run:  tests/api-tests.sh ghcr.io/maxirmx/trustvpn-container:latest

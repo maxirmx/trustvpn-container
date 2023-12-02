@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
 # This file is a part of TrustVPN application
 # Redistribution and use in source and binary forms, with or without
@@ -21,7 +22,25 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Profile with traffic limitation
-# 1Mb in, 1Mb out
+# More safety, by turning some bugs into errors.
+# Without `errexit` you don’t need ! and can replace
+# PIPESTATUS with a simple $?
 
-shaper 1048576, 1048576
+set -o errexit -o pipefail -o noclobber -o nounset
+
+#   $1 - client id
+#   $2 - profile
+
+if [ ! -h "/etc/openvpn/ccd/$1" ]; then
+    echo "Client with id '$1' does not exist!"
+    exit 1
+fi
+
+if [ ! -e "/opt/trustvpn-container/profiles/$2" ]; then
+    echo "Profile '$2' is not defined!"
+    exit 1
+fi
+
+rm -f "/etc/openvpn/ccd/$1"
+ln -s "/opt/trustvpn-container/profiles/$2" "/etc/openvpn/ccd/$1"
+echo " == OK == "
