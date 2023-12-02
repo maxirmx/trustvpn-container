@@ -1,6 +1,10 @@
 # TrustVPN
 
-OpenVPN docker container
+OpenVPN docker container for trustvpn projects
+
+## Configuration
+
+trustvpn-container-config -u <host name>
 
 ## API
 
@@ -29,5 +33,3 @@ trustvpn-client-remove <user name>
 ```
 Removes profile for ```<user name>```, i.e.: revokes key, removes personal configuration
 
-
-trustvpn-container-config -u $HOST
