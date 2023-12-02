@@ -22,7 +22,7 @@ docker run -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-conta
 ```
 trustvpn-client-create <user name> <profile name>
 ```
-Создает профиль (ключи) для ```<user name>```, связывает личную конфигурацию с ```<profile name>```.
+Создает настройки и конфигурирует доступ  для ```<user name>```, связывает личную конфигурацию с ```<profile name>```.
 
 ```
 trustvpn-client-get <user name>
