@@ -111,4 +111,4 @@ jobs:
       - name: Run trustvpn-container tests
         if: ${{ contains(github.ref, 'refs/tags/v') }}
         shell: bash
-        run:  tests/api-tests.sh ghcr.io/maxirmx/trustvpn-container:latest
+        run: CONTAINER=ghcr.io/maxirmx/trustvpn-container:latest tests/api-tests.sh
