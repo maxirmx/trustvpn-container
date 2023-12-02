@@ -32,12 +32,12 @@ set -o errexit -o pipefail -o noclobber -o nounset
 #   $2 - profile
 
 if [ ! -h "/etc/openvpn/ccd/$1" ]; then
-    echo "Client with id $1 does not exist!"
+    echo "Client with id '$1' does not exist!"
     exit 1
 fi
 
 if [ ! -e "/opt/trustvpn-container/profiles/$2" ]; then
-    echo "Profile $2 is not defined!"
+    echo "Profile '$2' is not defined!"
     exit 1
 fi
 
