@@ -34,7 +34,7 @@ ENV SERVICE="TrustVPN"
 VOLUME /etc/openvpn
 
 RUN apk upgrade -U
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata tc iptables
 RUN ln -s /usr/share/zoneinfo/${APP_TZ} /etc/localtime
 
 RUN mkdir -p /opt/trustvpn-container
