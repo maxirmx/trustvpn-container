@@ -34,6 +34,8 @@ if [ ! -e /etc/openvpn/openvpn.conf ]; then
   echo "$SERVICE" | ovpn_initpki nopass
 fi
 
+ovpn_run
+
 INTERFACE=tun0  # VPN interface
 
 # Setup the root qdisc and two classes (one for each profile)
@@ -54,5 +56,3 @@ tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 20 fw flowid 1
 
 iptables -t mangle -A OUTPUT -d 10.8.0.2 -j MARK --set-mark 10  # Mark limited user traffic
 iptables -t mangle -A OUTPUT -d 10.8.0.3 -j MARK --set-mark 20  # Mark unlimited user traffic
-
-ovpn_run
