@@ -24,4 +24,4 @@
 # Profile with traffic limitation
 # 1Mb in, 1Mb out
 
-ifconfig-push 10.8.0.2 10.8.0.1
+PROFILE=limited

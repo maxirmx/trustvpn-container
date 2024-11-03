@@ -28,5 +28,9 @@
 
 set -o errexit -o pipefail -o noclobber -o nounset
 
-ovpn_genconfig -e "# Directory where we will store the individual user configuration files" -e "client-config-dir /etc/openvpn/ccd" "$@"
+ovpn_genconfig \
+    -e "# Client connect completion script" \
+    -e "client-connect /usr/local/bin/client-connect" \
+    -e "# Directory where we will store the individual user configuration files" \
+    -e "client-config-dir /etc/openvpn/ccd" "$@"
 echo "$SERVICE" | ovpn_initpki nopass

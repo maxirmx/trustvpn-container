@@ -22,10 +22,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-
 # ......................................................................
 test_container_config() {
-    echo "==> Test trustvpm-container-config"
+    echo "==> Test trustvpn-container-config"
     if [ -e "$DIR_CONFIG" ]; then
         sudo rm -rf "$DIR_CONFIG"
     fi
@@ -37,7 +36,7 @@ test_container_config() {
 
 # ......................................................................
 test_client_create() {
-    echo "==> Test trustvpm-client-create"
+    echo "==> Test trustvpn-client-create"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-create test invalid-profile" )
     assertEquals 1 "${PIPESTATUS[0]}"
@@ -57,7 +56,7 @@ test_client_create() {
 
 # ......................................................................
 test_client_get() {
-    echo "==> Check trustvpm-client-get"
+    echo "==> Check trustvpn-client-get"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-get test" )
     assertEquals 0 "${PIPESTATUS[0]}"
@@ -65,7 +64,7 @@ test_client_get() {
 
 # ......................................................................
 test_client_modify() {
-    echo "==> Test trustvpm-client-modify"
+    echo "==> Test trustvpn-client-modify"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test invalid-profile" )
     assertEquals 1 "${PIPESTATUS[0]}"
@@ -85,7 +84,7 @@ test_client_modify() {
 
 # ......................................................................
 test_client_block() {
-    echo "==> Test trustvpm-client-block"
+    echo "==> Test trustvpn-client-block"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-block invalid-client" )
     assertEquals 1 "${PIPESTATUS[0]}"
@@ -99,7 +98,7 @@ test_client_block() {
 
 # ......................................................................
 test_client_modify_after_block() {
-    echo "==> Test trustvpm-client-modify after block"
+    echo "==> Test trustvpn-client-modify after block"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test invalid-profile" )
     assertEquals 1 "${PIPESTATUS[0]}"
@@ -119,7 +118,7 @@ test_client_modify_after_block() {
 
 # ......................................................................
 test_client_remove() {
-    echo "==> Test trustvpm-client-remove"
+    echo "==> Test trustvpn-client-remove"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-remove test" )
     assertEquals 0 "${PIPESTATUS[0]}"
@@ -133,7 +132,7 @@ test_client_remove() {
 
 # ......................................................................
 test_client_create_blocked() {
-    echo "==> Test trustvpm-client-create [blocked]"
+    echo "==> Test trustvpn-client-create [blocked]"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-create test blocked" )
     assertEquals 0 "${PIPESTATUS[0]}"
@@ -143,7 +142,7 @@ test_client_create_blocked() {
 
 # ......................................................................
 test_client_get_blocked() {
-    echo "==> Check trustvpm-client-get [blocked]"
+    echo "==> Check trustvpn-client-get [blocked]"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-get test" )
     assertEquals 0 "${PIPESTATUS[0]}"
@@ -151,7 +150,7 @@ test_client_get_blocked() {
 
 # ......................................................................
 test_client_modify_after_block_2() {
-    echo "==> Test trustvpm-client-modify after block [2]"
+    echo "==> Test trustvpn-client-modify after block [2]"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test invalid-profile" )
     assertEquals 1 "${PIPESTATUS[0]}"
@@ -171,7 +170,7 @@ test_client_modify_after_block_2() {
 
 # ......................................................................
 test_client_modify_to_blocked() {
-    echo "==> Test trustvpm-client-modify to blocked"
+    echo "==> Test trustvpn-client-modify to blocked"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-modify test blocked" )
     assertEquals 0 "${PIPESTATUS[0]}"
@@ -181,7 +180,7 @@ test_client_modify_to_blocked() {
 
 # ......................................................................
 test_client_remove_blocked() {
-    echo "==> Test trustvpm-client-remove [blocked]"
+    echo "==> Test trustvpn-client-remove [blocked]"
 
     result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-remove test" )
     assertEquals 0 "${PIPESTATUS[0]}"

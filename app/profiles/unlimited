@@ -23,4 +23,4 @@
 
 # Profile without traffic limitation
 
-ifconfig-push 10.8.0.3 10.8.0.1
+PROFILE=unlimited
