@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
+# Copyright (c) 2023-2024 Maxim [maxirmx] Samsonov (https://sw.consulting)
 # This file is a part of TrustVPN application
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -33,5 +33,26 @@ if [ ! -e /etc/openvpn/openvpn.conf ]; then
   ovpn_genconfig -e "# Directory where we will store the individual user configuration files" -e "client-config-dir /etc/openvpn/ccd" "$@"
   echo "$SERVICE" | ovpn_initpki nopass
 fi
+
+INTERFACE=tun0  # VPN interface
+
+# Setup the root qdisc and two classes (one for each profile)
+#  limited profile:
+#   - 1 Mbps
+#   - classid 1:10
+#  unlimited profile:
+#   - 100 Mbps
+#   - classid 1:20
+
+tc qdisc add dev $INTERFACE root handle 1: htb default 30
+
+tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit
+tc class add dev $INTERFACE parent 1: classid 1:20 htb rate 100mbit
+
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 20 fw flowid 1:20  # Unlimited
+
+iptables -t mangle -A OUTPUT -d 10.8.0.2 -j MARK --set-mark 10  # Mark limited user traffic
+iptables -t mangle -A OUTPUT -d 10.8.0.3 -j MARK --set-mark 20  # Mark unlimited user traffic
 
 ovpn_run
