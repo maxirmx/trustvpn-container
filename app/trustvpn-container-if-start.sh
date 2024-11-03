@@ -30,7 +30,11 @@ set -o errexit -o pipefail -o noclobber -o nounset
 
 if [ ! -e /etc/openvpn/openvpn.conf ]; then
   echo "OpenVPN server.conf not found, generating configuration"
-  ovpn_genconfig -e "# Directory where we will store the individual user configuration files" -e "client-config-dir /etc/openvpn/ccd" "$@"
+  ovpn_genconfig \
+    -e "# Client connect completion script" \
+    -e "client-connect /usr/local/bin/client-connect" \
+    -e "# Directory where we will store the individual user configuration files" \
+    -e "client-config-dir /etc/openvpn/ccd" "$@"
   echo "$SERVICE" | ovpn_initpki nopass
 fi
 
@@ -43,16 +47,16 @@ INTERFACE=tun0  # VPN interface
 #   - 1 Mbps
 #   - classid 1:10
 #  unlimited profile:
-#   - 100 Mbps
+#   - no limits
 #   - classid 1:20
+#  default profile (just in case):
+#   - no limits
+#   - classid 1:30
 
 tc qdisc add dev $INTERFACE root handle 1: htb default 30
 
 tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit
-tc class add dev $INTERFACE parent 1: classid 1:20 htb rate 100mbit
+#tc class add dev $INTERFACE parent 1: classid 1:20 htb rate 100mbit
 
 tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
-tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 20 fw flowid 1:20  # Unlimited
-
-iptables -t mangle -A OUTPUT -d 10.8.0.2 -j MARK --set-mark 10  # Mark limited user traffic
-iptables -t mangle -A OUTPUT -d 10.8.0.3 -j MARK --set-mark 20  # Mark unlimited user traffic
+# tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 20 fw flowid 1:20  # Unlimited

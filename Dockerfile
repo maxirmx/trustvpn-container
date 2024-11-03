@@ -44,6 +44,7 @@ COPY app /opt/trustvpn-container
 RUN if [ -e /opt/trustvpn-container/profiles/blocked ]; then echo "Profile 'blocked' should not be used!" && exit 1; fi
 
 RUN ln -s /opt/trustvpn-container/trustvpn-container-config.sh /usr/local/bin/trustvpn-container-config
+RUN ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trustvpn-client-connect
 RUN ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trustvpn-client-create
 RUN ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trustvpn-client-remove
 RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify
