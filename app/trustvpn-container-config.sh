@@ -33,4 +33,5 @@ ovpn_genconfig \
     -e "client-connect /usr/local/bin/client-connect" \
     -e "# Directory where we will store the individual user configuration files" \
     -e "client-config-dir /etc/openvpn/ccd" "$@"
+
 echo "$SERVICE" | ovpn_initpki nopass

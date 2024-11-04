@@ -22,7 +22,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 # Hint:
-# docker build -t trustvpn-container .
+# build docker buildx build -t trustvpn-container .
+# initialization: docker run  -v $PWD/cfg:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u localhost"
 # docker run -p 1194:1194/UDP --cap-add NET_ADMIN --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.all.forwarding=1 trustvpn-container
 
 FROM kylemanna/openvpn:latest
@@ -37,17 +38,14 @@ RUN apk upgrade -U && \
     apk add --no-cache bash tzdata iptables iproute2 && \
     ln -s /usr/share/zoneinfo/${APP_TZ} /etc/localtime
 
-RUN mkdir -p /opt/trustvpn-container
-
 COPY app /opt/trustvpn-container
 
-RUN if [ -e /opt/trustvpn-container/profiles/blocked ]; then echo "Profile 'blocked' should not be used!" && exit 1; fi
-
-RUN ln -s /opt/trustvpn-container/trustvpn-container-config.sh /usr/local/bin/trustvpn-container-config
-RUN ln -s /opt/trustvpn-container/trustvpn-client-connect.sh /usr/local/bin/trustvpn-client-connect
-RUN ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trustvpn-client-create
-RUN ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trustvpn-client-remove
-RUN ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify
-RUN ln -s /opt/trustvpn-container/trustvpn-client-block.sh /usr/local/bin/trustvpn-client-block
-RUN ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get
-RUN ln -s /opt/trustvpn-container/trustvpn-container-if-start.sh /usr/local/bin/trustvpn-container-if-start
+RUN if [ -e /opt/trustvpn-container/profiles/blocked ]; then echo "Profile 'blocked' should not be used!" && exit 1; fi && \
+    ln -s /opt/trustvpn-container/trustvpn-container-config.sh /usr/local/bin/trustvpn-container-config && \
+    ln -s /opt/trustvpn-container/trustvpn-client-connect.sh /usr/local/bin/trustvpn-client-connect && \
+    ln -s /opt/trustvpn-container/trustvpn-client-create.sh /usr/local/bin/trustvpn-client-create && \
+    ln -s /opt/trustvpn-container/trustvpn-client-remove.sh /usr/local/bin/trustvpn-client-remove && \
+    ln -s /opt/trustvpn-container/trustvpn-client-modify.sh /usr/local/bin/trustvpn-client-modify && \
+    ln -s /opt/trustvpn-container/trustvpn-client-block.sh /usr/local/bin/trustvpn-client-block && \
+    ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get && \
+    ln -s /opt/trustvpn-container/trustvpn-container-if-start.sh /usr/local/bin/trustvpn-container-if-start

@@ -30,11 +30,13 @@ set -o errexit -o pipefail -o noclobber -o nounset
 
 if [ ! -e /etc/openvpn/openvpn.conf ]; then
   echo "OpenVPN server.conf not found, generating configuration"
+
   ovpn_genconfig \
     -e "# Client connect completion script" \
     -e "client-connect /usr/local/bin/client-connect" \
     -e "# Directory where we will store the individual user configuration files" \
     -e "client-config-dir /etc/openvpn/ccd" "$@"
+
   echo "$SERVICE" | ovpn_initpki nopass
 fi
 
