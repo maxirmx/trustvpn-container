@@ -33,7 +33,7 @@ if [ ! -e /etc/openvpn/openvpn.conf ]; then
 
   ovpn_genconfig \
     -e "# Client connect completion script" \
-    -e "client-connect /usr/local/bin/client-connect" \
+    -e "client-connect /opt/trustvpn-container/trustvpn-client-connect.sh" \
     -e "# Directory where we will store the individual user configuration files" \
     -e "client-config-dir /etc/openvpn/ccd" "$@"
 
