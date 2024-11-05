@@ -24,4 +24,5 @@
 # Profile with traffic limitation
 # 1Mb in, 1Mb out
 
-PROFILE=limited
+# Yes, this is a comment. trustvpn-client connect script parses comments starting with '# PROFILE='
+# PROFILE=limited

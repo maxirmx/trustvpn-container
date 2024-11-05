@@ -4,6 +4,8 @@
 CLIENT_IP="$ifconfig_pool_remote_ip"  # IP assigned to client by DHCP
 CCD_FILE="/etc/openvpn/ccd/$common_name"
 
+echo trustvpn-client-connect: "$common_name" connecting from "${CLIENT_IP}"
+
 # Default to "limited" profile
 PROFILE="limited"
 
@@ -16,9 +18,13 @@ if [ -f "$CCD_FILE" ]; then
     fi
 fi
 
+echo trustvpn-client-connect: "$common_name" PROFILE="${PROFILE}"
+
 # Apply traffic shaping based on the profile
 if [ "$PROFILE" = "limited" ]; then
+    echo trustvpn-client-connect: @iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 10
     iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 10
 elif [ "$PROFILE" = "unlimited" ]; then
+    echo trustvpn-client-connect: @iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 20
     iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 20
 fi

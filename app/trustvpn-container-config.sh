@@ -29,6 +29,8 @@
 set -o errexit -o pipefail -o noclobber -o nounset
 
 ovpn_genconfig \
+    -e "# Allow scripting" \
+    -e "script-security 2" \
     -e "# Client connect completion script" \
     -e "client-connect /opt/trustvpn-container/trustvpn-client-connect.sh" \
     -e "# Directory where we will store the individual user configuration files" \
