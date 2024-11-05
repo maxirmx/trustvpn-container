@@ -1,3 +1,5 @@
+[![lint](https://github.com/maxirmx/trustvpn-container/actions/workflows/lint.yml/badge.svg)](https://github.com/maxirmx/trustvpn-container/actions/workflows/lint.yml)
+
 # TrustVPN
 Контейнер OpenVPN Docker для проекта TrustVPN.
 Данный проект - небольшая обертка для ```kylemanna/openvpn```, не более.
