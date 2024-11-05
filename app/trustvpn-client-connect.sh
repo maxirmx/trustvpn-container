@@ -48,10 +48,11 @@ echo "$(date) trustvpn-client-connect: $common_name PROFILE=$PROFILE"
 # Apply traffic shaping based on the profile
 if [ "$PROFILE" = "limited" ]; then
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A OUTPUT -d $CLIENT_IP -j MARK --set-mark 10"
-    sudo /sbin/iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 10
+    sudo /sbin/iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 10docker
 
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -s $CLIENT_IP -j MARK --set-mark 10"
     sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP" -j MARK --set-mark 10
+
 elif [ "$PROFILE" = "unlimited" ]; then
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A OUTPUT -d $CLIENT_IP -j MARK --set-mark 20"
     sudo /sbin/iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 20

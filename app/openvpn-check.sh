@@ -56,7 +56,7 @@ echo "Network is up"
 
 OPENVPN=$(pgrep openvpn | wc -l )
 if [[ ${OPENVPN} -eq 0 ]]; then
-	echo "Openvpn process not running"
+	echo "Openvpn process is not running"
 	exit 1
 fi
 
