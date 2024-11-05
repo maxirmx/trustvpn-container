@@ -41,6 +41,9 @@ if [ -f "$CCD_FILE" ]; then
     if [ -n "$PROFILE_LINE" ]; then
         PROFILE=$(echo "$PROFILE_LINE" | cut -d'=' -f2)
     fi
+else
+    echo "$(date) trustvpn-client-connect: $common_name is blocked"
+    exit 1
 fi
 
 echo "$(date) trustvpn-client-connect: $common_name PROFILE=$PROFILE"
@@ -48,7 +51,7 @@ echo "$(date) trustvpn-client-connect: $common_name PROFILE=$PROFILE"
 # Apply traffic shaping based on the profile
 if [ "$PROFILE" = "limited" ]; then
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A OUTPUT -d $CLIENT_IP -j MARK --set-mark 10"
-    sudo /sbin/iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 10docker
+    sudo /sbin/iptables -t mangle -A OUTPUT -d "$CLIENT_IP" -j MARK --set-mark 10
 
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -s $CLIENT_IP -j MARK --set-mark 10"
     sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP" -j MARK --set-mark 10
