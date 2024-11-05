@@ -35,8 +35,10 @@ ENV SERVICE="TrustVPN"
 VOLUME /etc/openvpn
 
 RUN apk upgrade -U && \
-    apk add --no-cache bash tzdata iptables iproute2 && \
-    ln -s /usr/share/zoneinfo/${APP_TZ} /etc/localtime
+    apk add --no-cache sudo bash tzdata iptables iproute2 && \
+    ln -s /usr/share/zoneinfo/${APP_TZ} /etc/localtime && \
+    mkdir -p /etc/sudoers.d && \
+    echo "nobody ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/nobody
 
 COPY app /opt/trustvpn-container
 
