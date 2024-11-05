@@ -1,3 +1,4 @@
+[![build-and-push](https://github.com/maxirmx/trustvpn-container/actions/workflows/build-and-push.yml/badge.svg)](https://github.com/maxirmx/trustvpn-container/actions/workflows/build-and-push.yml)
 [![lint](https://github.com/maxirmx/trustvpn-container/actions/workflows/lint.yml/badge.svg)](https://github.com/maxirmx/trustvpn-container/actions/workflows/lint.yml)
 
 # TrustVPN
