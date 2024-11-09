@@ -1,8 +1,8 @@
 [![build-and-push](https://github.com/maxirmx/trustvpn-container/actions/workflows/build-and-push.yml/badge.svg)](https://github.com/maxirmx/trustvpn-container/actions/workflows/build-and-push.yml)
 [![lint](https://github.com/maxirmx/trustvpn-container/actions/workflows/lint.yml/badge.svg)](https://github.com/maxirmx/trustvpn-container/actions/workflows/lint.yml)
 
-# TrustVPN
-Контейнер OpenVPN Docker для проекта TrustVPN.
+# O!Service
+Контейнер OpenVPN Docker для проекта O!Service.
 Данный проект - небольшая обертка для ```kylemanna/openvpn```, не более.
 
 ## Конфигурация и инициализация
