@@ -25,11 +25,13 @@
 set -o errexit -o pipefail -o noclobber -o nounset
 
 # shellcheck disable=SC2154
-CLIENT_IP="$ifconfig_pool_remote_ip"  # IP assigned to client by DHCP
+CLIENT_IP_U="$ifconfig_pool_remote_ip"  # IP assigned to client by DHCP
+# shellcheck disable=SC2154
+CLIENT_IP_D="$trusted_ip"  # IP assigned to client by DHCP
 # shellcheck disable=SC2154
 CCD_FILE="/etc/openvpn/ccd/$common_name"
 
-echo "$(date) trustvpn-client-connect: $common_name IP=$CLIENT_IP"
+echo "$(date) trustvpn-client-connect: $common_name IP_U =$CLIENT_IP_U IP_D=$CLIENT_IP_D"
 
 # Default to "limited" profile
 PROFILE="limited"
@@ -50,16 +52,16 @@ echo "$(date) trustvpn-client-connect: $common_name PROFILE=$PROFILE"
 
 # Apply traffic shaping based on the profile
 if [ "$PROFILE" = "limited" ]; then
-    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP -j MARK --set-mark 10"
-    sudo /sbin/iptables -t mangle -A PREROUTING -d "$CLIENT_IP" -j MARK --set-mark 10
+    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_D -j MARK --set-mark 10"
+    sudo /sbin/iptables -t mangle -A PREROUTING -d "$CLIENT_IP_D" -j MARK --set-mark 10
 
-    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -s $CLIENT_IP -j MARK --set-mark 10"
-    sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP" -j MARK --set-mark 10
+    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_U -j MARK --set-mark 10"
+    sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 10
 
 elif [ "$PROFILE" = "unlimited" ]; then
-    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP -j MARK --set-mark 20"
-    sudo /sbin/iptables -t mangle -A -A PREROUTING -d "$CLIENT_IP" -j MARK --set-mark 20
+    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_D -j MARK --set-mark 20"
+    sudo /sbin/iptables -t mangle -A -A PREROUTING -d "$CLIENT_IP_D" -j MARK --set-mark 20
 
-    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -s $CLIENT_IP -j MARK --set-mark 20"
-    sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP" -j MARK --set-mark 20
+    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -s $CLIENT_IP_U -j MARK --set-mark 20"
+    sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 20
 fi
