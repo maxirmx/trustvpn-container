@@ -55,13 +55,13 @@ if [ "$PROFILE" = "limited" ]; then
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_D -j MARK --set-mark 10"
     sudo /sbin/iptables -t mangle -A PREROUTING -d "$CLIENT_IP_D" -j MARK --set-mark 10
 
-    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_U -j MARK --set-mark 10"
-    sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 10
+    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A POSTROUTING -d $CLIENT_IP_U -j MARK --set-mark 10"
+    sudo /sbin/iptables -t mangle -A POSTROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 10
 
 elif [ "$PROFILE" = "unlimited" ]; then
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_D -j MARK --set-mark 20"
     sudo /sbin/iptables -t mangle -A -A PREROUTING -d "$CLIENT_IP_D" -j MARK --set-mark 20
 
-    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A PREROUTING -s $CLIENT_IP_U -j MARK --set-mark 20"
-    sudo /sbin/iptables -t mangle -A PREROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 20
+    echo "$(date) trustvpn-client-connect: @iptables -t mangle -A POSTROUTING -s $CLIENT_IP_U -j MARK --set-mark 20"
+    sudo /sbin/iptables -t mangle -A POSTROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 20
 fi
