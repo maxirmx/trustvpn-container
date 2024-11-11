@@ -59,8 +59,8 @@ INTERFACE=tun0  # VPN interface
 
 tc qdisc add dev $INTERFACE root handle 1: htb default 30
 
-tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit
-tc class add dev $INTERFACE parent 1: classid 1:20 htb rate 100mbit
+tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit ceil 1mbit
+tc class add dev $INTERFACE parent 1: classid 1:20 htb rate 100mbit ceil 100mbit
 
 tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
 tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 20 fw flowid 1:20  # Unlimited
