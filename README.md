@@ -11,10 +11,11 @@
 
 Название профиля ```blocked``` зарезервировано для блокировки пользователей. Профиль с таким именем создавать нельзя. Это не проверяется, но сломает логику блокировки
 
-Контейнер должен быть инициализирован следующей командой:
+Контейнер может быть инициализирован следующей командой:
 ```
 docker run -rm -v <Path to OpenVPN configuration folder>:/etc/openvpn trustvpn-container bash -c "trustvpn-container-config -u <host name>"
 ```
+Если того не сделать, контейнер будет инициализирован при первом запуске. Следует иметь в виду, что процесс занимает до 10 минут и во время  инициализации статус контейнера 'unhealthy'
 
 ## API
 
@@ -56,28 +57,32 @@ trustvpn-client-remove <имя пользователя>
 Логига ограничений наcтраивается при старте контейнера в скрипте ```trustvpn-container-if-start.sh```
 
 ```
-INTERFACE=tun0  # VPN interface
+INTERFACE=eth0
 
 # Setup the root qdisc and two classes (one for each profile)
 #  limited profile:
 #   - 1 Mbps
-#   - classid 1:10
-#  'unlimited' profile:
-#   - 100 Mbps
-#   - classid 1:20
+#   - classid 1:10  (входящий трафик)
+#   - classid 1:11  (исходящий трафик)
+#  unlimited profile:
+#   - без ограничений
+#   - classid 1:20  (входящий трафик)
+#   - classid 1:21  (исходящий трафик)
 #  default profile (just in case):
 #   - no limits
 #   - classid 1:30
 
 tc qdisc add dev $INTERFACE root handle 1: htb default 30
 
-tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit
-tc class add dev $INTERFACE parent 1: classid 1:20 htb rate 100mbit
+tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit ceil 1mbit
+tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 1mbit ceil 1mbit
 
-tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
-tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 20 fw flowid 1:20  # Unlimited
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Входящий
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 11 fw flowid 1:11  # Исходящий
 
 ```
 
 В конфигурации OpenVPN реализован вызов пользовательского скрипта ```trustvpn-client-connect.sh```, который настраивает маркировку траффика пользователя.
 Для определения класса маркировки скрипт разбирает комментарий вида ```# PROFILE=<профиль>``` в CCD для клиента.
+
+Для снятия маркировки используется вызов пользовательского скрипта ```trustvpn-client-disconnect.sh```

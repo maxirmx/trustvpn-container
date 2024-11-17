@@ -50,7 +50,8 @@ fi
 
 echo "$(date) trustvpn-client-connect: $common_name PROFILE=$PROFILE"
 
-# Apply traffic shaping based on the profile
+# Apply traffic mangling based on the profile
+# sudo iptables -L -t mangle -n -v
 if [ "$PROFILE" = "limited" ]; then
     echo "$(date) trustvpn-client-connect: @iptables -t mangle -A POSTROUTING -d $CLIENT_IP_D -j MARK --set-mark 10"
     sudo /sbin/iptables -t mangle -A POSTROUTING -d "$CLIENT_IP_D" -j MARK --set-mark 10

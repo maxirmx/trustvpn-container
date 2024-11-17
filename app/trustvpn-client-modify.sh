@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
+# Copyright (c) 2023-2024 Maxim [maxirmx] Samsonov (https://sw.consulting)
 # This file is a part of TrustVPN application
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions

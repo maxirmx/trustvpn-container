@@ -38,10 +38,17 @@ INTERFACE=eth0  # VPN interface
 #   - no limits
 #   - classid 1:30
 
-tc qdisc add dev $INTERFACE root handle 1: htb default 30
+echo "$(date) trustvpn-container-init-tc: @tc qdisc add dev $INTERFACE root handle 1: htb default 30"
+tc qdisc add dev "$INTERFACE" root handle 1: htb default 30
 
-tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 500kbit ceil 500kbit
-tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 500kbit ceil 500kbit
+echo "$(date) trustvpn-container-init-tc: @tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 500kbit ceil 500kbit"
+tc class add dev "$INTERFACE" parent 1: classid 1:10 htb rate 500kbit ceil 500kbit
 
-tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
-tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 11 fw flowid 1:11  # Limited
+echo "$(date) trustvpn-container-init-tc: @tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 500kbit ceil 500kbit"
+tc class add dev "$INTERFACE" parent 1: classid 1:11 htb rate 500kbit ceil 500kbit
+
+echo "$(date) trustvpn-container-init-tc: @tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10"
+tc filter add dev "$INTERFACE" protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10
+
+echo "$(date) trustvpn-container-init-tc: @tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 11 fw flowid 1:11"
+tc filter add dev "$INTERFACE" protocol ip parent 1:0 prio 1 handle 11 fw flowid 1:11

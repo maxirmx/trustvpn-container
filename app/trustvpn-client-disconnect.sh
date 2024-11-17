@@ -52,7 +52,7 @@ if [ "$PROFILE" = "limited" ]; then
     echo "$(date) trustvpn-client-disconnect: @iptables -t mangle -D POSTROUTING -d $CLIENT_IP_D -j MARK --set-mark 10"
     sudo /sbin/iptables -t mangle -D POSTROUTING -d "$CLIENT_IP_D" -j MARK --set-mark 10
 
-    echo "$(date) trustvpn-client-disconnect: @iptables -t mangle -A PREROUTING -d $CLIENT_IP_U -j MARK --set-mark 11"
+    echo "$(date) trustvpn-client-disconnect: @iptables -t mangle -D PREROUTING -d $CLIENT_IP_U -j MARK --set-mark 11"
     sudo /sbin/iptables -t mangle -D PREROUTING -s "$CLIENT_IP_U" -j MARK --set-mark 11
 
 elif [ "$PROFILE" = "unlimited" ]; then
