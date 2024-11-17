@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2023 Maxim [maxirmx] Samsonov (https://sw.consulting)
+# Copyright (c) 2023-2024 Maxim [maxirmx] Samsonov (https://sw.consulting)
 # This file is a part of TrustVPN application
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -28,12 +28,20 @@
 
 set -o errexit -o pipefail -o noclobber -o nounset
 
-ovpn_genconfig \
-    -e "# Allow scripting" \
-    -e "script-security 2" \
-    -e "# Client connect completion script" \
-    -e "client-connect /opt/trustvpn-container/trustvpn-client-connect.sh" \
-    -e "# Directory where we will store the individual user configuration files" \
-    -e "client-config-dir /etc/openvpn/ccd" "$@"
+INTERFACE=tun0  # VPN interface
 
-echo "$SERVICE" | ovpn_initpki nopass
+# Setup the root qdisc and two classes (one for each profile)
+#  limited profile:
+#   - 1 Mbps
+#   - classid 1:10, 1:11
+#  default ('unlimited') profile:
+#   - no limits
+#   - classid 1:30
+
+tc qdisc add dev $INTERFACE root handle 1: htb default 30
+
+tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit ceil 500kbit
+tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 1mbit ceil 500kbit
+
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 11 fw flowid 1:11  # Limited
