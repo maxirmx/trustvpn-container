@@ -28,9 +28,20 @@
 
 set -o errexit -o pipefail -o noclobber -o nounset
 
-if [ ! -e /etc/openvpn/openvpn.conf ]; then
-  echo "OpenVPN server.conf not found, generating configuration"
-  /usr/local/bin/trustvpn-container-config.sh
-fi
+INTERFACE=eth0  # VPN interface
 
-ovpn_run
+# Setup the root qdisc and two classes (one for each profile)
+#  limited profile:
+#   - 1 Mbps
+#   - classid 1:10, 1:11
+#  default ('unlimited') profile:
+#   - no limits
+#   - classid 1:30
+
+tc qdisc add dev $INTERFACE root handle 1: htb default 30
+
+tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit ceil 500kbit
+tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 1mbit ceil 500kbit
+
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10  # Limited
+tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 11 fw flowid 1:11  # Limited
