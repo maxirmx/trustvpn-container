@@ -50,5 +50,4 @@ RUN if [ -e /opt/trustvpn-container/profiles/blocked ]; then echo "Profile 'bloc
     ln -s /opt/trustvpn-container/trustvpn-client-block.sh /usr/local/bin/trustvpn-client-block && \
     ln -s /opt/trustvpn-container/trustvpn-client-get.sh /usr/local/bin/trustvpn-client-get && \
     ln -s /opt/trustvpn-container/trustvpn-container-if-start.sh /usr/local/bin/trustvpn-container-if-start && \
-    ln -s /opt/trustvpn-container/trustvpn-init-tc.sh /usr/local/bin/trustvpn-container-init-tc && \
     ln -s /opt/trustvpn-container/openvpn-check.sh /usr/local/bin/openvpn-check

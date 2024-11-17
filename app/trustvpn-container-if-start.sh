@@ -33,6 +33,6 @@ if [ ! -e /etc/openvpn/openvpn.conf ]; then
   /usr/local/bin/trustvpn-container-config "$@"
 fi
 
-/usr/local/bin/trustvpn-container-init-tc
+/opt/trustvpn-container/trustvpn-init-tc.sh
 
 ovpn_run
