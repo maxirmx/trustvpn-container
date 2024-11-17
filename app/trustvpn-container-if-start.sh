@@ -30,7 +30,7 @@ set -o errexit -o pipefail -o noclobber -o nounset
 
 if [ ! -e /etc/openvpn/openvpn.conf ]; then
   echo "OpenVPN server.conf not found, generating configuration"
-  /usr/local/bin/trustvpn-container-config
+  /usr/local/bin/trustvpn-container-config "$@"
 fi
 
 ovpn_run
