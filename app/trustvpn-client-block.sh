@@ -30,10 +30,10 @@ set -o errexit -o pipefail -o noclobber -o nounset
 
 #   $1 - client id
 
-if [ ! -e "/etc/openvpn/ccd/$1" ]; then
-    echo "Client with id '$1' does not exist!"
-    exit 1
-fi
+# if [ ! -e "/etc/openvpn/ccd/$1" ]; then
+#     echo "Client with id '$1' does not exist!"
+#     exit 1
+# fi
 
 rm -f "/etc/openvpn/ccd/$1"
 ln -s "/opt/trustvpn-container/profiles/blocked" "/etc/openvpn/ccd/$1"
