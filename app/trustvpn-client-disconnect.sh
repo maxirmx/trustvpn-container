@@ -31,7 +31,7 @@ CLIENT_IP_D="$trusted_ip"  # IP assigned to client by DHCP
 # shellcheck disable=SC2154
 CCD_FILE="/etc/openvpn/ccd/$common_name"
 
-echo "$(date) trustvpn-client-disconnect: $common_name IP_U =$CLIENT_IP_U IP_D=$CLIENT_IP_D"
+echo "$(date) trustvpn-client-disconnect: $common_name IP_U=$CLIENT_IP_U IP_D=$CLIENT_IP_D"
 
 # Default to "limited" profile
 PROFILE="limited"
