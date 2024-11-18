@@ -28,12 +28,12 @@
 
 set -o errexit -o pipefail -o noclobber -o nounset
 
-INTERFACE=eth0  # VPN interface
+INTERFACE=eth0
 
 # Setup the root qdisc and two classes (one for each profile)
 #  limited profile:
 #   - 1 Mbps
-#   - classid 1:10, 1:11
+#   - classid 1:10 (incoming), 1:11 (outgoing)
 #  default ('unlimited') profile:
 #   - no limits
 #   - classid 1:30
@@ -41,11 +41,11 @@ INTERFACE=eth0  # VPN interface
 echo "$(date) trustvpn-container-init-tc: @tc qdisc add dev $INTERFACE root handle 1: htb default 30"
 tc qdisc add dev "$INTERFACE" root handle 1: htb default 30
 
-echo "$(date) trustvpn-container-init-tc: @tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 500kbit ceil 500kbit"
-tc class add dev "$INTERFACE" parent 1: classid 1:10 htb rate 500kbit ceil 500kbit
+echo "$(date) trustvpn-container-init-tc: @tc class add dev $INTERFACE parent 1: classid 1:10 htb rate 1mbit ceil 1mbit"
+tc class add dev "$INTERFACE" parent 1: classid 1:10 htb rate 1mbit ceil 1mbit"
 
-echo "$(date) trustvpn-container-init-tc: @tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 500kbit ceil 500kbit"
-tc class add dev "$INTERFACE" parent 1: classid 1:11 htb rate 500kbit ceil 500kbit
+echo "$(date) trustvpn-container-init-tc: @tc class add dev $INTERFACE parent 1: classid 1:11 htb rate 1mbit ceil 1mbit"
+tc class add dev "$INTERFACE" parent 1: classid 1:11 htb rate 1mbit ceil 1mbit"
 
 echo "$(date) trustvpn-container-init-tc: @tc filter add dev $INTERFACE protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10"
 tc filter add dev "$INTERFACE" protocol ip parent 1:0 prio 1 handle 10 fw flowid 1:10
