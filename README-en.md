@@ -40,11 +40,6 @@ trustvpn-client-modify <user name> <profiles>
 Links ```<user name>``` personal configuration to ```<profile name>```
 
 ```
-trustvpn-client-block <user name>
-```
-Blocks profile for ```<user name>```, i.e.:  removes personal configuration from ```ccd``` folder but does not revoke the key
-
-```
 trustvpn-client-remove <user name>
 ```
 Removes profile for ```<user name>```, i.e.: revokes key, removes personal configuration

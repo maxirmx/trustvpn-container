@@ -82,19 +82,6 @@ test_client_modify() {
     assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
 }
 
-# ......................................................................
-test_client_block() {
-    echo "==> Test trustvpn-client-block"
-
-    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-block invalid-client" )
-    assertEquals 1 "${PIPESTATUS[0]}"
-    assertContains "$result" "Client with id 'invalid-client' does not exist!"
-    assertTrue "[ -h $DIR_CONFIG/ccd/test ]"
-
-    result=$( docker run --rm -v "$DIR_CONFIG":/etc/openvpn "$CONTAINER" bash -c "trustvpn-client-block test" )
-    assertEquals 0 "${PIPESTATUS[0]}"
-    assertContains "$result" " == OK == "
-}
 
 # ......................................................................
 test_client_modify_after_block() {
